@@ -3,7 +3,7 @@
 </p>
 
 <h1>Network-File-Shares-and-Permissions</h1>
-In this tutorial, we observe various network traffic to and from Azure Virtual Machines with Wireshark as well as experiment with Network Security Groups. <br />
+In this walkthrough, we observe various network traffic to and from Azure Virtual Machines with Wireshark and experiment with Network Security Groups. In this lab, we will set up shared network files & permissions. We will create folders in the DC-1 VM and share them on the network. Certain files will have certain permissions. Only designated people will be able to view certain files. <br />
 
 <h2>Environments and Technologies Used</h2>
 
@@ -17,7 +17,7 @@ In this tutorial, we observe various network traffic to and from Azure Virtual M
 
 </p>
 <p>
-In this lab we will be settingup shared network files & permissions. We will create folders in the DC-1 VM and share them on the network certain files will have certain permissions. Only designated people will be able to view certain files. Lets get started. First go to the c:/ drive on the DC-1 machine and create 4 folders. "read-access" "read/write-access" "no-access" and "accounting".
+First, go to the c:/ drive on the DC-1 machine and create 4 folders: "read-access", "read/write-access", "no-access", and "accounting".
 </p>
 <br />
 
