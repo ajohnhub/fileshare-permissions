@@ -3,7 +3,7 @@
 </p>
 
 <h1>Network-File-Shares-and-Permissions</h1>
-In this walkthrough, we observe various network traffic to and from Azure Virtual Machines with Wireshark and experiment with Network Security Groups. In this lab, we will set up shared network files & permissions. We will create folders in the DC-1 VM and share them on the network. Certain files will have certain permissions. Only designated people will be able to view certain files. <br />
+In this walkthrough, we will set up shared network files & permissions. We will create folders in the DC-1 VM and share them on the network. Certain files will have certain permissions. Only designated people will be able to view certain files. <br />
 
 <h2>Environments and Technologies Used</h2>
 
@@ -17,38 +17,82 @@ In this walkthrough, we observe various network traffic to and from Azure Virtua
 
 </p>
 <p>
-First, go to the c:/ drive on the DC-1 machine and create 4 folders: "read-access", "read/write-access", "no-access", and "accounting".
+Connect/log into DC-1 as your domain admin account (mydomain.com\jane_admin).
+Connect/log into Client-1 as a normal user (mydomain\<someuser>). On DC-1, go to the C:/ drive on the DC-1 machine and create 4 folders: "read-access", "read/write-access", "no-access", and "accounting".
 </p>
 <br />
 
 <p>
-<img src="https://i.imgur.com/k70dozS.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/f4325414-4a37-4950-9e4d-8460e4d9da10" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 </p>
 <p>
-After the fodlers have been created what you want to do is share them on the network so that the client-1 machine can view them. We can also set the permissions of the folders in DC-1. Set the folders to the appropriate permissions. "read-access" should be read only for domain users, "read/write access" shuld have read/write permissions for domain users. Lastly "no-access" should have read/write permissions for domain admins only.
+Set the following permissions (share the folder)
+Folder: “read-access”, Group: “Domain Users”, Permission: “Read”
+Folder: “write-access”,  Group: “Domain Users”, Permissions: “Read/Write”
+Folder: “no-access”, Group: “Domain Admins”, “Permissions: “Read/Write”
+(Skip accounting for now)
+
 </p>
 <br />
 
-<p>
-<img src="https://i.imgur.com/wcpB5Ex.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<p> 
+
+<img src="https://github.com/user-attachments/assets/65444e72-cfdd-4155-886b-2d5455891094" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 </p>
-<img src="https://i.imgur.com/hku11Pt.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/4b6e1c58-7713-4d7e-ae78-33c5c2ba4638" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <p>
-If we login to the client machine with a normal user account we can test out the shared files we just created. As you can see the permissions that we set are working properly.
+
+</p>
+<br />
+<p>Attempt to access file shares as a normal user
+On Client-1, navigate to the shared folder (start, run, \\dc-1)
+Try to access the folders you just created. Which folders can you access? Which folders can you create stuff in? Does it make sense?
+  
+<img src="https://github.com/user-attachments/assets/3e69e3ee-84e1-440f-aa2e-d1ea8f14843d" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+</p>
+<img src="https://github.com/user-attachments/assets/5e97cf21-859d-45e8-9f6a-97d73634f94b" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/9e7f0586-e8ba-4a28-90ec-ea5f6e144821" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/e8c54afe-9507-4f0a-b0ae-141f39c56d71" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<p>
+</p>
+Go back to DC-1, in Active Directory, create a security group called “ACCOUNTANTS”
+On the “accounting” folder you created earlier, set the following permissions:
+Folder: “accounting”, Group: “ACCOUNTANTS”, Permissions: “Read/Write”.
+
 </p>
 <br />
 <p>
-<img src="https://i.imgur.com/CGQ8yaO.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/d91488f6-8531-4059-84a9-897fdce157b7" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 </p>
-<img src="https://i.imgur.com/f9TldBO.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <p>
 </p>
-Go back to the DC-1 VM. In AD create a security group called "Accountants" the users assigned to this security group will be the only ones allowed to view the "Accountants" folder. We have to share the "Accountants" folder just like we did in the last section, this we will be sharing it to only the accountants group. Normal users will not have access to this folder. If we wanted to give a normal user access to the accounting folder they would have to be a part of the "Accountants" security group.
+On Client-1, as  <someuser>, try to access the accountants folder. It should fail.
+
 </p>
 <br />
 <p>
-<img src="https://i.imgur.com/QADy92Z.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://github.com/user-attachments/assets/f27b6cba-455a-4e85-836e-ced988fd823b" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 </p>
-<img src="https://i.imgur.com/BUm3L2Q.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<p>
 </p>
-<img src="https://i.imgur.com/fH8fU7b.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Log out of Client-1 as  <someuser>
+On DC-1, make <someuser> a member of the “ACCOUNTANTS”  Security Group
+
+
+</p>
+<br />
+<p>
+<img src="https://github.com/user-attachments/assets/3e1390c1-8e8a-4d38-8fa7-806e3d08292d" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+</p>
+<p>
+</p>
+Sign back into Client-1 as <someuser> and try to access the “accounting” share in \\DC-1\ - Does it work now?
+
+
+</p>
+<br />
+<p>
+<img src="https://github.com/user-attachments/assets/eedfccb0-6472-479c-85ad-1736d5259745" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+</p>
+
+
