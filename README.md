@@ -15,6 +15,8 @@ In this walkthrough, we will set up shared network files & permissions. We will 
 
 - Windows 10</b> (21H2)
 
+<h2>Walkthrough Steps: </h2>
+
 </p>
 <p>
 Connect/log into DC-1 as your domain admin account (mydomain.com\jane_admin).
